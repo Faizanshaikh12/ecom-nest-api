@@ -4,6 +4,7 @@ import { User } from '../types/user';
 import { InjectModel } from '@nestjs/mongoose';
 import { LoginDto, RegisterDto } from '../auth/auth.dto';
 import * as bcrypt from 'bcrypt';
+import { Payload } from '../types/payload';
 
 @Injectable()
 export class UserService {
@@ -36,5 +37,10 @@ export class UserService {
     } else {
       throw new HttpException('Invalid Details', HttpStatus.UNAUTHORIZED);
     }
+  }
+
+  async findByPayload(payload: Payload) {
+    const { username } = payload;
+    return await this.userModel.findOne({ username });
   }
 }
